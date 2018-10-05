@@ -39,31 +39,68 @@ namespace NoisyCowStudios.Bin2Object
             return (Endianness == Endianness.Little ? bytes : bytes.Reverse().ToArray());
         }
 
-        public override long ReadInt64() {
+	    public byte[] ReadBytes(int count, long addr)
+	    {
+		    Position = addr;
+		    var bytes = base.ReadBytes(count);
+		    return (Endianness == Endianness.Little ? bytes : bytes.Reverse().ToArray());
+	    }
+
+		public override long ReadInt64() {
             return BitConverter.ToInt64(ReadBytes(8), 0);
         }
 
-        public override ulong ReadUInt64() {
+	    public long ReadInt64(long addr)
+	    {
+		    return BitConverter.ToInt64(ReadBytes(8, addr), 0);
+	    }
+
+		public override ulong ReadUInt64() {
             return BitConverter.ToUInt64(ReadBytes(8), 0);
-        }
+		}
 
-        public override int ReadInt32() {
+	    public ulong ReadUInt64(long addr)
+	    {
+		    return BitConverter.ToUInt64(ReadBytes(8, addr), 0);
+	    }
+
+		public override int ReadInt32() {
             return BitConverter.ToInt32(ReadBytes(4), 0);
-        }
+		}
 
-        public override uint ReadUInt32() {
+	    public int ReadInt32(long addr)
+	    {
+		    return BitConverter.ToInt32(ReadBytes(4, addr), 0);
+	    }
+
+		public override uint ReadUInt32() {
             return BitConverter.ToUInt32(ReadBytes(4), 0);
-        }
+		}
 
-        public override short ReadInt16() {
+	    public uint ReadUInt32(long addr)
+	    {
+		    return BitConverter.ToUInt32(ReadBytes(4, addr), 0);
+	    }
+
+		public override short ReadInt16() {
             return BitConverter.ToInt16(ReadBytes(2), 0);
-        }
+		}
 
-        public override ushort ReadUInt16() {
+	    public short ReadInt16(long addr)
+	    {
+		    return BitConverter.ToInt16(ReadBytes(2, addr), 0);
+	    }
+
+		public override ushort ReadUInt16() {
             return BitConverter.ToUInt16(ReadBytes(2), 0);
-        }
+		}
 
-        public T ReadObject<T>(long addr) where T : new() {
+	    public ushort ReadUInt16(long addr)
+	    {
+		    return BitConverter.ToUInt16(ReadBytes(2, addr), 0);
+	    }
+
+		public T ReadObject<T>(long addr) where T : new() {
             Position = addr;
             return ReadObject<T>();
         }
